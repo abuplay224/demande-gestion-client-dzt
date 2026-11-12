@@ -5,14 +5,9 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { logServerError } from "@/lib/errors";
+import { safeRedirectPath } from "@/lib/safe-redirect";
 
 export type SignInState = { error?: string; email?: string };
-
-/** Destination après connexion : chemin interne uniquement (pas de redirection ouverte). */
-function safeNext(raw: FormDataEntryValue | null) {
-  const next = typeof raw === "string" ? raw : "";
-  return next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/connexion") ? next : "/demandes";
-}
 
 export async function signIn(_prev: SignInState, formData: FormData): Promise<SignInState> {
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
@@ -35,7 +30,7 @@ export async function signIn(_prev: SignInState, formData: FormData): Promise<Si
     return { error: "Connexion impossible pour le moment. Réessayez dans un instant.", email };
   }
 
-  redirect(safeNext(formData.get("next")));
+  redirect(safeRedirectPath(formData.get("next")));
 }
 
 export async function signOut() {
