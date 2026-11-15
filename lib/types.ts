@@ -1,4 +1,4 @@
-import type { CustomerRequest } from "@/generated/prisma/client";
+import type { CustomerRequest } from "@prisma/client";
 
 /** Une demande client, type issu du client Prisma généré. */
 export type { CustomerRequest };

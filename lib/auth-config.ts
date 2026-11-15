@@ -7,7 +7,7 @@ import { nextCookies } from "better-auth/next-js";
 import { admin } from "better-auth/plugins";
 import { createAccessControl } from "better-auth/plugins/access";
 import { defaultStatements } from "better-auth/plugins/admin/access";
-import type { PrismaClient } from "@/generated/prisma/client";
+import type { PrismaClient } from "@prisma/client";
 import { PASSWORD_MAX, PASSWORD_MIN, type Role } from "./roles";
 
 export type { Role };
@@ -26,7 +26,7 @@ const roles = {
 export function createAuth(prisma: PrismaClient) {
   return betterAuth({
     appName: "Doztra Demandes",
-    database: prismaAdapter(prisma, { provider: "postgresql" }),
+    database: prismaAdapter(prisma, { provider: "mysql" }),
     emailAndPassword: {
       enabled: true,
       disableSignUp: true, // comptes créés par un administrateur uniquement

@@ -1,5 +1,5 @@
 import "server-only";
-import { Prisma, type CustomerRequest } from "@/generated/prisma/client";
+import { Prisma, type CustomerRequest } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { type ActionResult, logServerError } from "@/lib/errors";
 import type { RequestPage } from "@/lib/types";
