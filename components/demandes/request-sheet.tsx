@@ -138,7 +138,7 @@ export function RequestSheet({
           <div className="flex flex-col gap-3 border-t border-doztra-line px-5 py-4">
             <Button
               type="button"
-              variant="outline"
+              variant="default"
               disabled={pending || deletePending}
               onClick={() => setEditingId(r.id)}
               className="min-h-11 w-full rounded-xl"
@@ -150,11 +150,11 @@ export function RequestSheet({
             {canDelete && (
               <Button
                 type="button"
-                variant="outline"
+                variant="destructive"
                 disabled={pending || deletePending}
                 aria-busy={deletePending}
                 onClick={() => onDelete(r)}
-                className="min-h-11 w-full rounded-xl border-destructive/30 text-destructive hover:bg-destructive/5 hover:text-destructive"
+                className="min-h-11 w-full rounded-xl"
               >
                 <Trash2 aria-hidden="true" />
                 {deletePending ? "Suppression…" : "Supprimer la demande"}

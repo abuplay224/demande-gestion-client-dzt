@@ -1,40 +1,38 @@
 import "dotenv/config";
-import { Client } from "pg";
+import { PrismaClient, type Prisma } from "@prisma/client";
+import { createMariaDbAdapter } from "../../lib/db-connection";
 import { buildSeed } from "../../prisma/seed-data";
 
 export function testUrl() {
   const url = process.env.DATABASE_URL_TEST;
-  if (!url || url === process.env.DATABASE_URL || !/test/i.test(new URL(url).pathname)) {
-    throw new Error("DATABASE_URL_TEST doit désigner une base de test distincte (nom contenant « test »)");
+  if (!url) {
+    throw new Error("DATABASE_URL_TEST est absent du fichier .env");
   }
-  return url.replace(/\?schema=public$/, "");
+  const parsedUrl = new URL(url);
+  if (parsedUrl.protocol !== "mysql:" || url === process.env.DATABASE_URL || !/test/i.test(parsedUrl.pathname)) {
+    throw new Error("DATABASE_URL_TEST doit désigner une base MySQL distincte dont le nom contient « test »");
+  }
+  return url;
 }
 
-async function withClient<T>(fn: (c: Client) => Promise<T>) {
-  const c = new Client({ connectionString: testUrl() });
-  await c.connect();
+async function withPrisma<T>(fn: (prisma: PrismaClient) => Promise<T>) {
+  const prisma = new PrismaClient({ adapter: createMariaDbAdapter(testUrl()) });
   try {
-    return await fn(c);
+    return await fn(prisma);
   } finally {
-    await c.end();
+    await prisma.$disconnect();
   }
 }
 
 /** Vide la base de test puis, si demandé, recharge les 26 demandes du prototype. */
 export function resetDb({ seed = true } = {}) {
-  return withClient(async (c) => {
-    await c.query(`TRUNCATE TABLE customer_requests`);
+  return withPrisma(async (prisma) => {
+    await prisma.customerRequest.deleteMany();
     if (!seed) return;
-    for (const r of buildSeed()) {
-      await c.query(
-        `INSERT INTO customer_requests (id, customer_name, customer_email, customer_phone, subject, description, is_priority, created_at, updated_at)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
-        [r.id, r.customerName, r.customerEmail, r.customerPhone, r.subject, r.description, r.isPriority, r.createdAt, r.updatedAt]
-      );
-    }
+    await prisma.customerRequest.createMany({ data: buildSeed() });
   });
 }
 
-export function countRows(where = "true", params: unknown[] = []) {
-  return withClient(async (c) => (await c.query(`SELECT count(*)::int AS n FROM customer_requests WHERE ${where}`, params)).rows[0].n as number);
+export function countRows(where: Prisma.CustomerRequestWhereInput = {}) {
+  return withPrisma((prisma) => prisma.customerRequest.count({ where }));
 }

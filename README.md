@@ -1,16 +1,23 @@
 # Doztra — Gestion des demandes clients (MVP)
 
-Application web interne qui permet à l’équipe Doztra de **saisir**, **consulter**,
-**modifier**, **prioriser** et **supprimer** les demandes reçues des clients. Interface en français,
+Application web interne qui permet à l’équipe Doztra de 
+**saisir**, 
+**consulter**,
+**modifier**, 
+**prioriser** et 
+**supprimer** 
+les demandes reçues des clients. Interface en français,
 heures affichées dans le fuseau Africa/Conakry. Spécification :
 [docs/Cahier-des-charges-Doztra-MVP.md](docs/Cahier-des-charges-Doztra-MVP.md).
 Guide d’utilisation : [docs/guide-utilisateur.md](docs/guide-utilisateur.md).
+Guide développeur : [docs/guide-developpement.md](docs/guide-developpement.md).
 
 ## Accès et rôles
 
 Connexion par e-mail et mot de passe ([Better Auth](https://www.better-auth.com), sessions en
-cookie HttpOnly de 12 h, mots de passe hachés). **Aucune inscription publique** : les comptes
-sont créés par un administrateur.
+cookie HttpOnly de 12 h, mots de passe hachés). 
+    **Aucune inscription publique** : 
+les comptes sont créés par un administrateur.
 
 | Rôle | Droits |
 |---|---|
@@ -46,30 +53,49 @@ l’endpoint de suppression. L’API mobile v1 ne propose pas encore la modifica
 ## Stack
 
 Next.js 16 (App Router, Server Actions) · React 19 · TypeScript · Tailwind CSS 4 ·
-shadcn/ui (Base UI) · PostgreSQL · Prisma 7 (adaptateur `pg`) · Zod · Vitest · Playwright.
+shadcn/ui (Base UI) · MySQL · Prisma 7 (adaptateur MariaDB) · Zod · Vitest · Playwright.
 
 ## Prérequis
 
 - Node.js 24
-- PostgreSQL 16 ou plus récent, avec un utilisateur autorisé à créer des bases
+- MySQL 8.0.16 ou plus récent (pour l’application des contraintes `CHECK`)
 - Microsoft Edge (utilisé par les tests de bout en bout ; aucun navigateur à télécharger)
 
 ## Installation
 
 ```bash
 npm install                 # installe les dépendances et génère le client Prisma
-cp .env.example .env        # puis renseigner les identifiants PostgreSQL
 ```
+
+Sous PowerShell, créez le fichier local de configuration avec :
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Sous macOS/Linux, utilisez `cp .env.example .env`. Dans les deux cas, renseignez ensuite
+les URL MySQL et les secrets décrits dans `.env.example`. Ne partagez et ne commitez
+jamais `.env`.
 
 `.env` définit deux bases distinctes :
 
 | Variable | Rôle |
 |---|---|
-| `DATABASE_URL` | Base de développement (ex. `doztra_dev`) |
-| `DATABASE_URL_TEST` | Base de test (ex. `doztra_test`), **vidée par les tests** ; son nom doit contenir « test » |
+| `DATABASE_URL` | Base MySQL de développement (ex. `doztra_dev`) |
+| `DATABASE_URL_TEST` | Base MySQL de test (ex. `doztra_test`), **vidée par les tests** ; son nom doit contenir « test » |
 
-Créer les deux bases (par exemple avec `createdb doztra_dev` et `createdb doztra_test`),
-puis :
+Avec un compte administrateur MySQL, créer les bases et un utilisateur dédié à l’application :
+
+```sql
+CREATE DATABASE doztra_dev CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE doztra_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'doztra'@'localhost' IDENTIFIED BY 'MOT_DE_PASSE_FORT';
+GRANT ALL PRIVILEGES ON doztra_dev.* TO 'doztra'@'localhost';
+GRANT ALL PRIVILEGES ON doztra_test.* TO 'doztra'@'localhost';
+```
+
+Remplacez le mot de passe d’exemple et utilisez les mêmes identifiants dans `.env`.
+Appliquer ensuite les migrations :
 
 ```bash
 npm run db:migrate          # applique les migrations sur la base de développement
@@ -153,7 +179,7 @@ tests/unit|integration|e2e/   Vitest et Playwright
 
 ## Déploiement
 
-1. Base PostgreSQL de production distincte, sauvegarde quotidienne et restauration testée.
+1. Base MySQL de production distincte, sauvegarde quotidienne et restauration testée.
 2. Variables `DATABASE_URL`, `BETTER_AUTH_SECRET` (propre à la production) et `BETTER_AUTH_URL` (URL https publique) fournies par l’hébergeur, jamais dans le dépôt.
 3. `npm ci && npm run db:deploy && npm run build && npm start`, derrière HTTPS.
 4. Créer le premier administrateur avec `npm run admin:create`.

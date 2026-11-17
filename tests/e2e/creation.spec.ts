@@ -33,7 +33,7 @@ test("parcours complet : liste → formulaire → enregistrement → liste → a
 
   await page.reload();
   await expect(page.getByRole("row").filter({ hasText: "Clinique Ambroise Paré" })).toBeVisible();
-  expect(await countRows("customer_phone = $1", ["+224 0628 11 22 33"])).toBe(1);
+  expect(await countRows({ customerPhone: "+224 0628 11 22 33" })).toBe(1);
 });
 
 test("R02 — erreurs par champ, focus sur le premier champ fautif, rien d’enregistré", async ({ page }) => {
@@ -63,7 +63,7 @@ test("R05 — un double clic sur Enregistrer ne crée qu’une demande", async (
   await page.getByRole("button", { name: "Enregistrer" }).dblclick();
 
   await expect(page.getByText("Demande enregistrée")).toBeVisible();
-  expect(await countRows("customer_name = $1", ["Double Clic SARL"])).toBe(1);
+  expect(await countRows({ customerName: "Double Clic SARL" })).toBe(1);
 });
 
 test("Annuler revient à la liste sans rien enregistrer", async ({ page }) => {

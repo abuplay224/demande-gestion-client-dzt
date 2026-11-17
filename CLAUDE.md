@@ -33,7 +33,7 @@ Si une demande d'évolution sort de ce périmètre : le signaler avant d'écrire
 
 **Imposée par le client :**
 - Next.js (App Router) — interface et logique serveur dans le même projet
-- PostgreSQL — stockage persistant
+- MySQL — stockage persistant
 - shadcn/ui — composants d'interface
 
 **Choix complémentaires retenus :**
@@ -60,7 +60,7 @@ npm run lint                 # ESLint
 npm run typecheck            # tsc --noEmit
 npm test                     # Vitest : unitaires + intégration
 npm run test:unit            # unitaires seuls
-npm run test:integration     # intégration sur PostgreSQL (DATABASE_URL_TEST)
+npm run test:integration     # intégration sur MySQL (DATABASE_URL_TEST)
 npx vitest run tests/unit/request.schema.test.ts -t "R03"   # un seul test
 npm run test:e2e             # build + Playwright (Edge, base de test, port 3200)
 npx playwright test -g "R09" # un seul parcours (après un build)
@@ -78,7 +78,7 @@ Liens stylés en bouton : `<Link className={buttonVariants(...)}>`, jamais
 **Base de données.** `.env` (non versionné, modèle `.env.example`) définit `DATABASE_URL`
 (dev) et `DATABASE_URL_TEST` (test, vidée par les tests d'intégration ; son nom doit
 contenir « test »). Prisma 7 : configuration dans `prisma.config.ts`, client généré dans
-`generated/prisma` (non versionné), adaptateur `@prisma/adapter-pg`. Les CHECK de longueur
+`generated/prisma` (non versionné), adaptateur `@prisma/adapter-mariadb`. Les CHECK de longueur
 sont écrits à la main dans le SQL de migration. Prisma refuse `migrate reset` lancé par un
 agent IA : ne pas le contourner, demander à l'utilisateur.
 
@@ -187,7 +187,7 @@ tests/
 | Skill | À charger quand |
 |---|---|
 | `doztra-demandes-business-rules` | Toute logique métier : validation, tri, pagination, priorité, idempotence |
-| `doztra-demandes-nextjs` | Server Actions, Prisma, schéma PostgreSQL, contrats applicatifs, invalidation |
+| `doztra-demandes-nextjs` | Server Actions, Prisma, schéma MySQL, contrats applicatifs, invalidation |
 | `doztra-demandes-ui` | Écrans, composants shadcn/ui, tokens de design, états, responsive, accessibilité |
 | `doztra-demandes-securite-recette` | Contrôle d'accès, durcissement, tests et critères d'acceptation R01–R21 |
 

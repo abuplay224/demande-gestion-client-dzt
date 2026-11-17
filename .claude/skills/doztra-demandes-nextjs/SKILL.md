@@ -1,9 +1,9 @@
 ---
 name: doztra-demandes-nextjs
-description: Utiliser pour écrire ou relire le code serveur de Doztra Demandes en Next.js App Router + Prisma + PostgreSQL — schéma et migrations, Server Actions de création, modification, priorité et suppression, requête de liste paginée, invalidation du cache, erreurs structurées, jeu de données fictives.
+description: Utiliser pour écrire ou relire le code serveur de Doztra Demandes en Next.js App Router + Prisma + MySQL — schéma et migrations, Server Actions de création, modification, priorité et suppression, requête de liste paginée, invalidation du cache, erreurs structurées, jeu de données fictives.
 ---
 
-# Doztra Demandes — Architecture Next.js, Prisma, PostgreSQL
+# Doztra Demandes — Architecture Next.js, Prisma, MySQL
 
 Les règles de comportement viennent de `doztra-demandes-business-rules` (RG1–RG28).
 Ce skill décrit **comment** les implémenter côté serveur.
@@ -17,7 +17,7 @@ Ce skill décrit **comment** les implémenter côté serveur.
 | Lecture de la liste | `app/demandes/page.tsx` | Server Component |
 | Formulaire, panneau, bouton priorité | `components/demandes/*` | Client Components |
 | Création, modification, changement de priorité, suppression | `server/actions/*` | Server Actions |
-| Accès PostgreSQL | `lib/db.ts` + `server/queries/*` | Module serveur dédié |
+| Accès MySQL | `lib/db.ts` + `server/queries/*` | Module serveur dédié |
 
 - Pas de backend séparé, pas d'API REST publique.
 - Aucune connexion base exposée au navigateur.
@@ -32,23 +32,22 @@ Ce skill décrit **comment** les implémenter côté serveur.
 
 ```prisma
 model CustomerRequest {
-  id            String   @id @db.Uuid
+  id            String   @id @default(uuid()) @db.Char(36)
   customerName  String   @map("customer_name")  @db.VarChar(150)
   customerEmail String?  @map("customer_email") @db.VarChar(254)
   customerPhone String?  @map("customer_phone") @db.VarChar(30)
   subject       String   @db.VarChar(200)
   description   String   @db.Text
   isPriority    Boolean  @default(false) @map("is_priority")
-  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt     DateTime @map("updated_at") @db.Timestamptz(3)
+  createdAt     DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt     DateTime @map("updated_at") @db.DateTime(3)
 
   @@index([isPriority(sort: Desc), createdAt(sort: Desc), id(sort: Desc)], map: "idx_requests_list")
   @@map("customer_requests")
 }
 ```
 
-`id` est fourni par l'application (UUID de soumission, RG7) : pas de `@default(uuid())`,
-sinon l'idempotence devient impossible à garantir.
+L'UUID de soumission (`id`) est produit par l'application avant l'envoi du formulaire (RG7).
 
 `updatedAt` n'utilise **pas** `@updatedAt` : RG19 impose une mise à jour uniquement sur
 changement réel, donc la valeur est écrite explicitement.
@@ -58,12 +57,12 @@ changement réel, donc la valeur est écrite explicitement.
 Prisma ne génère pas les CHECK : les ajouter dans la migration.
 
 ```sql
-ALTER TABLE customer_requests
-  ADD CONSTRAINT chk_customer_name_len CHECK (char_length(btrim(customer_name)) BETWEEN 2 AND 150),
-  ADD CONSTRAINT chk_subject_len       CHECK (char_length(btrim(subject))       BETWEEN 3 AND 200),
-  ADD CONSTRAINT chk_description_len   CHECK (char_length(description)          BETWEEN 10 AND 5000),
-  ADD CONSTRAINT chk_email_len         CHECK (customer_email IS NULL OR char_length(customer_email) <= 254),
-  ADD CONSTRAINT chk_phone_len         CHECK (customer_phone IS NULL OR char_length(customer_phone) <= 30);
+ALTER TABLE `customer_requests`
+  ADD CONSTRAINT `chk_customer_name_len` CHECK (CHAR_LENGTH(TRIM(`customer_name`)) BETWEEN 2 AND 150),
+  ADD CONSTRAINT `chk_subject_len` CHECK (CHAR_LENGTH(TRIM(`subject`)) BETWEEN 3 AND 200),
+  ADD CONSTRAINT `chk_description_len` CHECK (CHAR_LENGTH(TRIM(`description`)) BETWEEN 10 AND 5000),
+  ADD CONSTRAINT `chk_email_len` CHECK (`customer_email` IS NULL OR CHAR_LENGTH(TRIM(`customer_email`)) BETWEEN 1 AND 254),
+  ADD CONSTRAINT `chk_phone_len` CHECK (`customer_phone` IS NULL OR CHAR_LENGTH(TRIM(`customer_phone`)) BETWEEN 1 AND 30);
 ```
 
 La base est la dernière barrière : la validation applicative ne la remplace pas.
@@ -286,7 +285,7 @@ ils invalident `/demandes`. La confirmation est gérée par le client avant l’
 
 ## 10. Dates et fuseau
 
-- Stockage : `TIMESTAMPTZ`, valeurs serveur, UTC.
+- Stockage : `DATETIME(3)` sans fuseau intégré ; écrire et interpréter les dates en UTC.
 - Affichage : `Intl.DateTimeFormat('fr-FR', { timeZone: 'Africa/Conakry', … })`.
 
 ```ts

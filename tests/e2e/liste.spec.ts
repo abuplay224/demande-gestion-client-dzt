@@ -25,7 +25,7 @@ test("R09 — marquer comme prioritaire : badge, remontée en tête, persistance
 
   await page.reload();
   await expect(row(page, "Mariama Diallo")).toContainText("Prioritaire");
-  expect(await countRows("customer_name = $1 AND is_priority", ["Mariama Diallo"])).toBe(1);
+  expect(await countRows({ customerName: "Mariama Diallo", isPriority: true })).toBe(1);
 });
 
 test("R10 — retirer la priorité renvoie la demande dans l’ordre chronologique", async ({ page }) => {
@@ -126,7 +126,22 @@ test("modifier une demande depuis son panneau de détail", async ({ page }) => {
 
   await page.reload();
   await expect(page.getByRole("row").filter({ hasText: "Hôtel Kaloum modifié" })).toContainText("Objet mis à jour");
-  expect(await countRows("customer_name = $1 AND subject = $2", ["Hôtel Kaloum modifié", "Objet mis à jour"])).toBe(1);
+  expect(await countRows({ customerName: "Hôtel Kaloum modifié", subject: "Objet mis à jour" })).toBe(1);
+});
+
+test("annuler la modification conserve les données initiales", async ({ page }) => {
+  await page.goto("/demandes");
+  await page.getByRole("button", { name: "Voir la demande de Hôtel Kaloum" }).click();
+
+  const dialog = page.getByRole("dialog");
+  await dialog.getByRole("button", { name: "Modifier la demande" }).click();
+  await dialog.getByLabel("Nom du client ou de l’entreprise *").fill("Modification annulée");
+  await dialog.getByRole("button", { name: "Annuler" }).click();
+
+  await expect(dialog).toContainText("Hôtel Kaloum");
+  await expect(dialog).not.toContainText("Modification annulée");
+  expect(await countRows({ customerName: "Hôtel Kaloum" })).toBe(1);
+  expect(await countRows({ customerName: "Modification annulée" })).toBe(0);
 });
 
 test("un agent ne voit pas la commande de suppression", async ({ page }) => {
@@ -147,7 +162,7 @@ test.describe("suppression par un administrateur", () => {
     await page.once("dialog", (confirmation) => confirmation.dismiss());
     await deleteButton.click();
     await expect(dialog).toBeVisible();
-    expect(await countRows("customer_name = $1", ["Hôtel Kaloum"])).toBe(1);
+    expect(await countRows({ customerName: "Hôtel Kaloum" })).toBe(1);
 
     await page.once("dialog", async (confirmation) => {
       expect(confirmation.message()).toContain("irréversible");
@@ -158,6 +173,6 @@ test.describe("suppression par un administrateur", () => {
     await expect(page.getByText("Demande supprimée")).toBeVisible();
     await expect(dialog).toBeHidden();
     await expect(page.getByText("25 demandes · 4 prioritaires")).toBeVisible();
-    expect(await countRows("customer_name = $1", ["Hôtel Kaloum"])).toBe(0);
+    expect(await countRows({ customerName: "Hôtel Kaloum" })).toBe(0);
   });
 });

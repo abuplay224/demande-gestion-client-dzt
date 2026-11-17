@@ -1,9 +1,9 @@
 
 // Recrée les comptes de test E2E sur la base de test.
 import "dotenv/config";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { PrismaClient } from "@prisma/client";
 import { createAuth, createCredentialUser } from "../../lib/auth-config";
+import { createMariaDbAdapter } from "../../lib/db-connection";
 import { E2E_ADMIN, E2E_AGENT, PASSWORD } from "./users";
 
 async function main() {
@@ -13,18 +13,7 @@ async function main() {
     throw new Error("Base de test attendue");
   }
 
-  const databaseUrl = new URL(url);
-
-  const adapter = new PrismaMariaDb({
-    host: databaseUrl.hostname,
-    port: Number(databaseUrl.port || 3306),
-    user: decodeURIComponent(databaseUrl.username),
-    password: decodeURIComponent(databaseUrl.password),
-    database: decodeURIComponent(databaseUrl.pathname.replace(/^\/+/, "")),
-    connectionLimit: 5,
-  });
-
-  const prisma = new PrismaClient({ adapter });
+  const prisma = new PrismaClient({ adapter: createMariaDbAdapter(url) });
 
   try {
     await prisma.$transaction([

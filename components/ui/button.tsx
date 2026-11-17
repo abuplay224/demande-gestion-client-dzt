@@ -10,6 +10,7 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-doztra-primary text-white hover:bg-doztra-primary-hover hover:text-white",
+        destructive: "bg-destructive text-white hover:bg-destructive/90 hover:text-white",
         outline:
           "border-[1.5px] border-doztra-control bg-white text-doztra-ink hover:text-doztra-ink",
         dark: "bg-doztra-ink text-white hover:text-white",

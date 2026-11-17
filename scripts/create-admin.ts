@@ -1,10 +1,10 @@
 
 import "dotenv/config";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { PrismaClient } from "@prisma/client";
 import { createInterface } from "node:readline";
 import { parseArgs } from "node:util";
 import { createAuth, createCredentialUser } from "../lib/auth-config";
+import { createMariaDbAdapter } from "../lib/db-connection";
 
 function askHidden(question: string): Promise<string> {
   return new Promise((resolve) => {
@@ -71,20 +71,7 @@ async function main() {
     throw new Error("DATABASE_URL n'est pas défini.");
   }
 
-  const databaseUrl = new URL(url);
-
-  const adapter = new PrismaMariaDb({
-    host: databaseUrl.hostname,
-    port: Number(databaseUrl.port || 3306),
-    user: decodeURIComponent(databaseUrl.username),
-    password: decodeURIComponent(databaseUrl.password),
-    database: decodeURIComponent(
-      databaseUrl.pathname.replace(/^\/+/, "")
-    ),
-    connectionLimit: 5,
-  });
-
-  const prisma = new PrismaClient({ adapter });
+  const prisma = new PrismaClient({ adapter: createMariaDbAdapter(url) });
 
   try {
     const auth = createAuth(prisma);

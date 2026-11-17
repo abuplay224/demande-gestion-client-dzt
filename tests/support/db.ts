@@ -5,7 +5,17 @@ export { prisma };
 
 /** Vide la table de la base de test (protégée par integration-setup.ts). */
 export async function resetDb() {
-  await prisma.$executeRawUnsafe(`TRUNCATE TABLE "customer_requests"`);
+  await prisma.customerRequest.deleteMany();
+}
+
+export async function resetAuthDb() {
+  await prisma.$transaction([
+    prisma.apiSession.deleteMany(),
+    prisma.session.deleteMany(),
+    prisma.account.deleteMany(),
+    prisma.user.deleteMany(),
+    prisma.verification.deleteMany(),
+  ]);
 }
 
 export async function insertRequest(overrides: Partial<Parameters<typeof prisma.customerRequest.create>[0]["data"]> = {}) {

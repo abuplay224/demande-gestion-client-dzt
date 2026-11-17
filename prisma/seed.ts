@@ -1,7 +1,7 @@
 
 import "dotenv/config";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { PrismaClient } from "@prisma/client";
+import { createMariaDbAdapter } from "../lib/db-connection";
 import { buildSeed } from "./seed-data";
 
 async function main() {
@@ -11,20 +11,7 @@ async function main() {
     throw new Error("DATABASE_URL n’est pas défini");
   }
 
-  const databaseUrl = new URL(url);
-
-  const adapter = new PrismaMariaDb({
-    host: databaseUrl.hostname,
-    port: Number(databaseUrl.port || 3306),
-    user: decodeURIComponent(databaseUrl.username),
-    password: decodeURIComponent(databaseUrl.password),
-    database: decodeURIComponent(
-      databaseUrl.pathname.replace(/^\/+/, "")
-    ),
-    connectionLimit: 5,
-  });
-
-  const prisma = new PrismaClient({ adapter });
+  const prisma = new PrismaClient({ adapter: createMariaDbAdapter(url) });
 
   try {
     const { count } = await prisma.customerRequest.createMany({

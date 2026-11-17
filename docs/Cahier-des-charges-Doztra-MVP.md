@@ -12,7 +12,7 @@ Le résultat attendu est un registre partagé, persistant et utilisable sur ordi
 - Ajouter une demande.
 - Afficher les demandes.
 - Marquer une demande comme prioritaire.
-- Utiliser Next.js pour le full stack, PostgreSQL pour les données et shadcn/ui pour les composants.
+- Utiliser Next.js pour le full stack, MySQL pour les données et shadcn/ui pour les composants.
 
 ### Hypothèses de conception retenues
 - Usage interne : les collaborateurs de Doztra saisissent les demandes reçues des clients.
@@ -124,7 +124,7 @@ Exigences : navigation clavier, focus visible, champs avec libellés, messages d
 ## 6. Architecture technique
 ### Stack imposée
 - Next.js avec App Router : interface et logique serveur dans le même projet.
-- PostgreSQL : stockage persistant.
+- MySQL : stockage persistant.
 - shadcn/ui : composants d’interface.
 
 ### Choix complémentaires proposés
@@ -139,7 +139,7 @@ Ces compléments sont des choix de conception proposés. Utiliser des versions s
 - Server Components : lecture de la liste.
 - Client Components : interactions du formulaire et du panneau.
 - Server Actions : création et mise à jour de la priorité.
-- Module serveur dédié : accès à PostgreSQL.
+- Module serveur dédié : accès à MySQL.
 - Après une écriture réussie : invalider /demandes et rafraîchir les données affichées.
 - Ne pas exposer de connexion à la base dans le navigateur.
 - Pas de backend séparé ni d’API REST publique pour ce MVP.
@@ -159,19 +159,19 @@ Erreurs structurées : VALIDATION_ERROR, UNAUTHORIZED, NOT_FOUND, CONFLICT et IN
 ## 7. Modèle de données
 Une seule table métier : customer_requests. Les éventuelles tables du fournisseur d’identité dépendent du mécanisme d’accès retenu.
 
-| Colonne | Type PostgreSQL | Contraintes |
+| Colonne | Type MySQL | Contraintes |
 |---|---|---|
-| id | UUID | Clé primaire ; généré côté serveur pour le formulaire |
+| id | CHAR(36) | Clé primaire UUID ; générée côté serveur pour le formulaire |
 | customer_name | VARCHAR(150) | NOT NULL, longueur minimale 2 |
 | customer_email | VARCHAR(254) | Nullable |
 | customer_phone | VARCHAR(30) | Nullable |
 | subject | VARCHAR(200) | NOT NULL, longueur minimale 3 |
 | description | TEXT | NOT NULL, longueur de 10 à 5 000 |
 | is_priority | BOOLEAN | NOT NULL, DEFAULT false |
-| created_at | TIMESTAMPTZ | NOT NULL, valeur serveur à la création |
-| updated_at | TIMESTAMPTZ | NOT NULL, valeur serveur à chaque modification réelle |
+| created_at | DATETIME(3) | NOT NULL, valeur serveur UTC à la création |
+| updated_at | DATETIME(3) | NOT NULL, valeur serveur UTC à chaque modification réelle |
 
-Ajouter des contraintes CHECK pour les longueurs obligatoires. Stocker des horodatages avec fuseau, afficher en français dans le fuseau Africa/Conakry proposé pour Doztra.
+Ajouter des contraintes CHECK pour les longueurs obligatoires (MySQL 8.0.16 ou plus récent). Stocker les horodatages en UTC dans `DATETIME(3)`, afficher en français dans le fuseau Africa/Conakry proposé pour Doztra.
 
 Index de liste proposé : (is_priority DESC, created_at DESC, id DESC).
 Tri correspondant : ORDER BY is_priority DESC, created_at DESC, id DESC.
@@ -202,7 +202,7 @@ Cible de performance proposée pour la recette : sur 1 000 demandes fictives et 
 | R03 | E-mail renseigné mais invalide | Refus avec message compréhensible |
 | R04 | Coordonnées valides, téléphone avec + et zéro | Valeurs conservées correctement |
 | R05 | Double clic ou répétition du même envoi | Une seule demande pour le même UUID |
-| R06 | Actualisation et redémarrage de l’application | Demandes conservées en PostgreSQL |
+| R06 | Actualisation et redémarrage de l’application | Demandes conservées en MySQL |
 | R07 | Aucune demande | État vide et bouton d’ajout visibles |
 | R08 | Plus de 20 demandes | Pagination et ordre global corrects |
 | R09 | Marquage prioritaire | Badge, tri et valeur persistée mis à jour |
@@ -219,12 +219,12 @@ Cible de performance proposée pour la recette : sur 1 000 demandes fictives et 
 | R20 | Suppression définitive | Après confirmation, seul l’administrateur peut supprimer la demande ciblée ; un agent reçoit un refus et la demande reste intacte. La liste et son compteur sont actualisés après succès. Un identifiant invalide, une demande absente ou un appel sans session ne supprime aucune autre ligne. |
 | R21 | Modification depuis le détail avec un utilisateur connecté | Champs validés et persistés, dates et priorité préservées, accès anonyme refusé |
 
-Tests attendus : validation et règles métier, intégration sur PostgreSQL de test, parcours de bout en bout création → liste → priorité → actualisation, puis vérification manuelle mobile/clavier. L’amendement du 10 novembre 2026 ajoute la suppression définitive et son scénario de recette R20.
+Tests attendus : validation et règles métier, intégration sur MySQL de test, parcours de bout en bout création → liste → priorité → actualisation, puis vérification manuelle mobile/clavier. L’amendement du 10 novembre 2026 ajoute la suppression définitive et son scénario de recette R20.
 
 ## 10. Livrables
 - Code source versionné du projet Next.js.
 - Interface française intégrée avec shadcn/ui.
-- Schéma PostgreSQL et migrations.
+- Schéma MySQL et migrations.
 - Jeu de données fictives pour démonstration.
 - Tests couvrant les parcours critiques.
 - README : prérequis, installation, configuration, migrations, lancement, tests et déploiement.
@@ -234,7 +234,7 @@ Tests attendus : validation et règles métier, intégration sur PostgreSQL de t
 
 ## 11. Étapes de réalisation
 1. Confirmer les hypothèses : champs, accès interne, retrait de priorité et hébergement.
-2. Initialiser Next.js, TypeScript, shadcn/ui et PostgreSQL.
+2. Initialiser Next.js, TypeScript, shadcn/ui et MySQL.
 3. Définir les migrations et la validation.
 4. Réaliser la liste et la consultation du détail.
 5. Réaliser la création avec gestion des erreurs et répétitions.

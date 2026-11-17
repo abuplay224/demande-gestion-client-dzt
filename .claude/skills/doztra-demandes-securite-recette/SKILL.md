@@ -91,7 +91,7 @@ En-têtes de réponse recommandés (`next.config`) : `Content-Security-Policy` r
 | R03 | E-mail renseigné mais invalide | Refus avec message compréhensible | unitaire |
 | R04 | Téléphone avec `+` et zéro initial | Valeurs conservées à l'identique | intégration |
 | R05 | Double clic ou renvoi identique | Une seule demande pour le même UUID | intégration + e2e |
-| R06 | Actualisation et redémarrage | Demandes conservées en PostgreSQL | e2e |
+| R06 | Actualisation et redémarrage | Demandes conservées en MySQL | e2e |
 | R07 | Aucune demande | État vide et bouton d'ajout visibles | composant + e2e |
 | R08 | Plus de 20 demandes | Pagination et ordre global corrects | intégration + e2e |
 | R09 | Marquage prioritaire | Badge, tri et valeur persistée mis à jour | intégration + e2e |
@@ -113,11 +113,11 @@ En-têtes de réponse recommandés (`next.config`) : `Content-Security-Policy` r
 ```
 tests/
   unit/          validation Zod, formatage des dates, règles pures  → R02, R03
-  integration/   actions et requêtes sur PostgreSQL de test         → R01, R04–R05, R08–R15, R18–R21
+  integration/   actions et requêtes sur MySQL de test               → R01, R04–R05, R08–R15, R18–R21
   e2e/           création → liste → modification → priorité → suppression → R05–R09, R15–R17, R20–R21
 ```
 
-- L'intégration tourne sur une **base PostgreSQL de test réelle** (conteneur jetable),
+- L'intégration tourne sur une **base MySQL de test réelle** (conteneur jetable),
   pas sur un double en mémoire : les CHECK, l'index et le tri font partie du
   comportement testé.
 - Chaque test d'intégration repart d'un schéma migré et d'un jeu de données maîtrisé.

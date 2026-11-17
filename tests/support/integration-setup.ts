@@ -4,8 +4,13 @@ import { afterAll, beforeEach, vi } from "vitest";
 // Les tests d’intégration tournent exclusivement sur la base de test.
 const testUrl = process.env.DATABASE_URL_TEST;
 if (!testUrl) throw new Error("DATABASE_URL_TEST est absent du fichier .env");
-if (testUrl === process.env.DATABASE_URL || !/test/i.test(new URL(testUrl).pathname)) {
-  throw new Error("DATABASE_URL_TEST doit désigner une base de test distincte (nom contenant « test »)");
+const parsedTestUrl = new URL(testUrl);
+if (
+  parsedTestUrl.protocol !== "mysql:" ||
+  testUrl === process.env.DATABASE_URL ||
+  !/test/i.test(parsedTestUrl.pathname)
+) {
+  throw new Error("DATABASE_URL_TEST doit désigner une base MySQL distincte dont le nom contient « test »");
 }
 process.env.DATABASE_URL = testUrl;
 

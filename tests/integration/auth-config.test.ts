@@ -1,7 +1,7 @@
 import { APIError } from "better-auth/api";
 import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { createAuth, createCredentialUser } from "@/lib/auth-config";
-import { prisma } from "../support/db";
+import { prisma, resetAuthDb } from "../support/db";
 
 // Configuration Better Auth réelle sur la base de test : mots de passe, inscription, comptes désactivés.
 const auth = createAuth(prisma);
@@ -21,7 +21,7 @@ beforeAll(() => {
 });
 
 beforeEach(async () => {
-  await prisma.$executeRawUnsafe(`TRUNCATE TABLE "users" CASCADE`);
+  await resetAuthDb();
 });
 
 describe("comptes e-mail + mot de passe", () => {

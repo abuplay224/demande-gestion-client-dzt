@@ -1,7 +1,7 @@
 import { createAuth, createCredentialUser } from "@/lib/auth-config";
 import { resetRateLimits } from "@/lib/api/rate-limit";
 import type { Role } from "@/lib/roles";
-import { prisma } from "./db";
+import { prisma, resetAuthDb } from "./db";
 
 // Appels directs aux Route Handlers de l’API v1, sur la base de test.
 
@@ -35,7 +35,7 @@ export const PASSWORD = "motdepasse-api-123";
 
 export async function resetApiState() {
   resetRateLimits();
-  await prisma.$executeRawUnsafe(`TRUNCATE TABLE "users" CASCADE`);
+  await resetAuthDb();
 }
 
 export async function createUser(email = "agent@doztra.test", role: Role = "agent") {

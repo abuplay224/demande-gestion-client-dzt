@@ -1,86 +1,70 @@
--- CreateTable
-CREATE TABLE "users" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "email_verified" BOOLEAN NOT NULL DEFAULT false,
-    "image" TEXT,
-    "role" TEXT NOT NULL DEFAULT 'agent',
-    "banned" BOOLEAN NOT NULL DEFAULT false,
-    "ban_reason" TEXT,
-    "ban_expires" TIMESTAMPTZ(3),
-    "created_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+CREATE TABLE `users` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `email_verified` BOOLEAN NOT NULL DEFAULT false,
+    `image` VARCHAR(191) NULL,
+    `role` VARCHAR(191) NOT NULL DEFAULT 'agent',
+    `banned` BOOLEAN NOT NULL DEFAULT false,
+    `ban_reason` VARCHAR(191) NULL,
+    `ban_expires` DATETIME(3) NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
-);
+    PRIMARY KEY (`id`),
+    CONSTRAINT `chk_user_role` CHECK (`role` IN ('admin', 'agent'))
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- CreateTable
-CREATE TABLE "sessions" (
-    "id" TEXT NOT NULL,
-    "expires_at" TIMESTAMPTZ(3) NOT NULL,
-    "token" TEXT NOT NULL,
-    "created_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMPTZ(3) NOT NULL,
-    "ip_address" TEXT,
-    "user_agent" TEXT,
-    "impersonated_by" TEXT,
-    "user_id" TEXT NOT NULL,
+CREATE TABLE `sessions` (
+    `id` VARCHAR(191) NOT NULL,
+    `expires_at` DATETIME(3) NOT NULL,
+    `token` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
+    `ip_address` VARCHAR(191) NULL,
+    `user_agent` VARCHAR(191) NULL,
+    `impersonated_by` VARCHAR(191) NULL,
+    `user_id` VARCHAR(191) NOT NULL,
 
-    CONSTRAINT "sessions_pkey" PRIMARY KEY ("id")
-);
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- CreateTable
-CREATE TABLE "accounts" (
-    "id" TEXT NOT NULL,
-    "account_id" TEXT NOT NULL,
-    "provider_id" TEXT NOT NULL,
-    "user_id" TEXT NOT NULL,
-    "access_token" TEXT,
-    "refresh_token" TEXT,
-    "id_token" TEXT,
-    "access_token_expires_at" TIMESTAMPTZ(3),
-    "refresh_token_expires_at" TIMESTAMPTZ(3),
-    "scope" TEXT,
-    "password" TEXT,
-    "created_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMPTZ(3) NOT NULL,
+CREATE TABLE `accounts` (
+    `id` VARCHAR(191) NOT NULL,
+    `account_id` VARCHAR(191) NOT NULL,
+    `provider_id` VARCHAR(191) NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
+    `access_token` VARCHAR(191) NULL,
+    `refresh_token` VARCHAR(191) NULL,
+    `id_token` VARCHAR(191) NULL,
+    `access_token_expires_at` DATETIME(3) NULL,
+    `refresh_token_expires_at` DATETIME(3) NULL,
+    `scope` VARCHAR(191) NULL,
+    `password` VARCHAR(191) NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
 
-    CONSTRAINT "accounts_pkey" PRIMARY KEY ("id")
-);
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- CreateTable
-CREATE TABLE "verifications" (
-    "id" TEXT NOT NULL,
-    "identifier" TEXT NOT NULL,
-    "value" TEXT NOT NULL,
-    "expires_at" TIMESTAMPTZ(3) NOT NULL,
-    "created_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+CREATE TABLE `verifications` (
+    `id` VARCHAR(191) NOT NULL,
+    `identifier` VARCHAR(191) NOT NULL,
+    `value` VARCHAR(191) NOT NULL,
+    `expires_at` DATETIME(3) NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    CONSTRAINT "verifications_pkey" PRIMARY KEY ("id")
-);
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- CreateIndex
-CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+CREATE UNIQUE INDEX `users_email_key` ON `users` (`email`);
+CREATE UNIQUE INDEX `sessions_token_key` ON `sessions` (`token`);
+CREATE INDEX `sessions_user_id_idx` ON `sessions` (`user_id`);
+CREATE INDEX `accounts_user_id_idx` ON `accounts` (`user_id`);
+CREATE INDEX `verifications_identifier_idx` ON `verifications` (`identifier`);
 
--- CreateIndex
-CREATE UNIQUE INDEX "sessions_token_key" ON "sessions"("token");
-
--- CreateIndex
-CREATE INDEX "sessions_user_id_idx" ON "sessions"("user_id");
-
--- CreateIndex
-CREATE INDEX "accounts_user_id_idx" ON "accounts"("user_id");
-
--- CreateIndex
-CREATE INDEX "verifications_identifier_idx" ON "verifications"("identifier");
-
--- AddForeignKey
-ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- Rôles autorisés (ajouté à la main) : tout autre rôle est refusé par la base.
-ALTER TABLE "users" ADD CONSTRAINT "chk_user_role" CHECK ("role" IN ('admin', 'agent'));
+ALTER TABLE `sessions`
+    ADD CONSTRAINT `sessions_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `accounts`
+    ADD CONSTRAINT `accounts_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -9,6 +9,16 @@ if (!url) {
   process.exit(1);
 }
 
+const testUrl = new URL(url);
+if (
+  testUrl.protocol !== "mysql:" ||
+  url === process.env.DATABASE_URL ||
+  !/test/i.test(testUrl.pathname)
+) {
+  console.error("DATABASE_URL_TEST doit désigner une base MySQL distincte dont le nom contient « test »");
+  process.exit(1);
+}
+
 // Les arguments contenant des espaces sont remis entre guillemets (exécution via le shell).
 const quote = (a) => (/[\s"]/.test(a) ? `"${a.replace(/"/g, '\\"')}"` : a);
 const command = process.argv.slice(2).map(quote).join(" ");
