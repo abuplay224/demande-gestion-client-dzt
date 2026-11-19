@@ -4,7 +4,7 @@ import * as React from "react"
 import { Dialog as SheetPrimitive } from "@base-ui/react/dialog"
 import { cn } from "cn"
 
-// Panneau latéral adapté au prototype Doztra : voile rgba(8,10,20,.48), entrée par la droite.
+// Panneau latéral adapté au prototype ABD : voile rgba(8,10,20,.48), entrée par la droite.
 
 function Sheet({ ...props }: SheetPrimitive.Root.Props) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />

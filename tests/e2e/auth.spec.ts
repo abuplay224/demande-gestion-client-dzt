@@ -42,7 +42,7 @@ test.describe("visiteur sans session (R15)", () => {
     await expect(page.getByText("E-mail ou mot de passe incorrect.")).toBeVisible();
     await expect(page.getByLabel("E-mail")).toHaveValue(E2E_AGENT.email);
 
-    await login(page, "inconnu@doztra.test", PASSWORD);
+    await login(page, "inconnu@abd.test", PASSWORD);
     await expect(page.getByText("E-mail ou mot de passe incorrect.")).toBeVisible();
   });
 
@@ -81,24 +81,24 @@ test.describe("administrateur", () => {
     await expect(page.getByRole("listitem", { name: E2E_ADMIN.name })).toContainText("(vous)");
 
     await page.getByLabel("Nom complet *").fill("Mamadou Diallo");
-    await page.getByLabel("E-mail *").fill("Mamadou.Diallo@doztra.test");
+    await page.getByLabel("E-mail *").fill("Mamadou.Diallo@abd.test");
     await page.getByLabel(/Mot de passe provisoire/).fill("provisoire-2026");
     await page.getByRole("button", { name: "Créer le compte" }).click();
-    await expect(page.getByText("Compte créé pour mamadou.diallo@doztra.test")).toBeVisible();
+    await expect(page.getByText("Compte créé pour mamadou.diallo@abd.test")).toBeVisible();
     const row = page.getByRole("listitem", { name: "Mamadou Diallo" });
     await expect(row).toContainText("Agent");
     await expect(row).toContainText("Actif");
 
     // Même e-mail : refusé au bon champ
     await page.getByLabel("Nom complet *").fill("Doublon");
-    await page.getByLabel("E-mail *").fill("mamadou.diallo@doztra.test");
+    await page.getByLabel("E-mail *").fill("mamadou.diallo@abd.test");
     await page.getByLabel(/Mot de passe provisoire/).fill("provisoire-2026");
     await page.getByRole("button", { name: "Créer le compte" }).click();
     await expect(page.getByText("Un compte existe déjà avec cet e-mail.")).toBeVisible();
 
     // Le nouvel agent se connecte
     const other = await freshPage(browser);
-    await login(other, "mamadou.diallo@doztra.test", "provisoire-2026");
+    await login(other, "mamadou.diallo@abd.test", "provisoire-2026");
     await expect(other).toHaveURL(/\/demandes$/);
 
     // Désactivation : sa session tombe et il ne peut plus se reconnecter
@@ -106,7 +106,7 @@ test.describe("administrateur", () => {
     await expect(row).toContainText("Désactivé");
     await other.reload();
     await expect(other).toHaveURL(/\/connexion/);
-    await login(other, "mamadou.diallo@doztra.test", "provisoire-2026");
+    await login(other, "mamadou.diallo@abd.test", "provisoire-2026");
     await expect(other.getByText("Ce compte est désactivé. Contactez un administrateur.")).toBeVisible();
 
     // Réactivation puis promotion administrateur
@@ -114,7 +114,7 @@ test.describe("administrateur", () => {
     await expect(row).toContainText("Actif");
     await row.getByRole("button", { name: "Passer administrateur" }).click();
     await expect(row).toContainText("Administrateur");
-    await login(other, "mamadou.diallo@doztra.test", "provisoire-2026");
+    await login(other, "mamadou.diallo@abd.test", "provisoire-2026");
     await expect(other.getByRole("link", { name: "Utilisateurs" })).toBeVisible();
   });
 

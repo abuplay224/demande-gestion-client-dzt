@@ -16,9 +16,9 @@ beforeEach(async () => {
   await resetApiState();
   vi.clearAllMocks();
   await createUser();
-  await createUser("admin@doztra.test", "admin");
-  token = (await call(login, "POST", { body: { email: "agent@doztra.test", password: PASSWORD } })).json.data.accessToken;
-  adminToken = (await call(login, "POST", { body: { email: "admin@doztra.test", password: PASSWORD } })).json.data.accessToken;
+  await createUser("admin@abd.test", "admin");
+  token = (await call(login, "POST", { body: { email: "agent@abd.test", password: PASSWORD } })).json.data.accessToken;
+  adminToken = (await call(login, "POST", { body: { email: "admin@abd.test", password: PASSWORD } })).json.data.accessToken;
 });
 
 const minutesAgo = (m: number) => new Date(Date.now() - m * 60_000);

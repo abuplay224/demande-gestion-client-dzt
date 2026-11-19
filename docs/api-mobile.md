@@ -1,4 +1,4 @@
-# API mobile Doztra Demandes — guide d’intégration (v1)
+# API mobile ABD Demandes — guide d’intégration (v1)
 
 Ce guide s’adresse au développeur de l’application React Native. Le contrat complet (schémas,
 exemples, codes) est dans [api/openapi.yaml](api/openapi.yaml) : importez-le dans Postman ou
@@ -84,7 +84,7 @@ POST /api/v1/auth/login
 Content-Type: application/json
 X-App-Version: 1.0.0
 
-{ "email": "binta.camara@doztra.com", "password": "…", "deviceName": "iPhone de Binta" }
+{ "email": "binta.camara@example.com", "password": "…", "deviceName": "iPhone de Binta" }
 ```
 
 ```jsonc
@@ -92,7 +92,7 @@ X-App-Version: 1.0.0
   "tokenType": "Bearer",
   "accessToken": "dza_…", "accessTokenExpiresAt": "2026-10-27T12:15:00.000Z",
   "refreshToken": "dzr_…", "refreshTokenExpiresAt": "2026-11-26T12:00:00.000Z",
-  "user": { "id": "…", "name": "Binta Camara", "email": "binta.camara@doztra.com", "role": "agent" } } }
+  "user": { "id": "…", "name": "Binta Camara", "email": "binta.camara@example.com", "role": "agent" } } }
 ```
 
 - `401` « E-mail ou mot de passe incorrect. » : même message que le compte existe ou non.
@@ -265,7 +265,7 @@ X-App-Version: 1.0.0
 - **Textes** : description et coordonnées s’affichent comme du texte (`<Text>`), sans aucune
   interprétation HTML.
 - **Libellés** : en français, avec l’apostrophe typographique `’`. La charte (couleurs,
-  police Mulish) est celle du prototype web `docs/Doztra Demandes.dc.html`.
+  police Mulish) est celle du prototype web de référence.
 
 ---
 

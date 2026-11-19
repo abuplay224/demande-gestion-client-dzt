@@ -5,7 +5,7 @@ import { ListHero } from "@/components/demandes/list-hero";
 import { ListSkeleton } from "@/components/demandes/list-states";
 import { RequestsSection } from "@/components/demandes/requests-section";
 
-export const metadata: Metadata = { title: "Demandes clients — Doztra" };
+export const metadata: Metadata = { title: "Demandes clients — ABD" };
 
 export default function DemandesPage({ searchParams }: PageProps<"/demandes">) {
   return (

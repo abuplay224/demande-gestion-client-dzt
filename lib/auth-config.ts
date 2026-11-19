@@ -25,7 +25,7 @@ const roles = {
 
 export function createAuth(prisma: PrismaClient) {
   return betterAuth({
-    appName: "Doztra Demandes",
+    appName: "ABD Demandes",
     database: prismaAdapter(prisma, { provider: "mysql" }),
     emailAndPassword: {
       enabled: true,

@@ -7,7 +7,7 @@ import { RequestForm } from "@/components/demandes/request-form";
 import { buttonVariants } from "@/components/ui/button";
 import { requirePageUser } from "@/lib/session";
 
-export const metadata: Metadata = { title: "Nouvelle demande — Doztra" };
+export const metadata: Metadata = { title: "Nouvelle demande — ABD" };
 
 // UUID de soumission généré côté serveur à l’ouverture du formulaire (RG7)
 async function FormWithSubmissionId() {

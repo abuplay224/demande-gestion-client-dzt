@@ -1,23 +1,17 @@
-# Doztra — Gestion des demandes clients (MVP)
+# ABD — Gestion des demandes clients (MVP)
 
-Application web interne qui permet à l’équipe Doztra de 
-**saisir**, 
-**consulter**,
-**modifier**, 
-**prioriser** et 
-**supprimer** 
-les demandes reçues des clients. Interface en français,
+Application web interne qui permet à l’équipe ABD de **saisir**, **consulter**,
+**modifier**, **prioriser** et **supprimer** les demandes reçues des clients. Interface en français,
 heures affichées dans le fuseau Africa/Conakry. Spécification :
-[docs/Cahier-des-charges-Doztra-MVP.md](docs/Cahier-des-charges-Doztra-MVP.md).
+[cahier des charges du MVP](docs/Cahier-des-charges-Doztra-MVP.md).
 Guide d’utilisation : [docs/guide-utilisateur.md](docs/guide-utilisateur.md).
 Guide développeur : [docs/guide-developpement.md](docs/guide-developpement.md).
 
 ## Accès et rôles
 
 Connexion par e-mail et mot de passe ([Better Auth](https://www.better-auth.com), sessions en
-cookie HttpOnly de 12 h, mots de passe hachés). 
-    **Aucune inscription publique** : 
-les comptes sont créés par un administrateur.
+cookie HttpOnly de 12 h, mots de passe hachés). **Aucune inscription publique** : les comptes
+sont créés par un administrateur.
 
 | Rôle | Droits |
 |---|---|
@@ -29,7 +23,7 @@ vérifie elle-même la session et, lorsque nécessaire, le rôle (`lib/session.t
 modifier son propre rôle ni se désactiver. Un compte désactivé perd immédiatement ses sessions.
 
 > Écart assumé avec le cahier des charges (§2 « mêmes droits pour tous ») : les rôles Agent et
-> Administrateur ont été ajoutés à la demande de Doztra pour la gestion des comptes.
+> Administrateur ont été ajoutés à la demande de ABD pour la gestion des comptes.
 
 ## API mobile (v1)
 
@@ -46,7 +40,7 @@ l’endpoint de suppression. L’API mobile v1 ne propose pas encore la modifica
 - Contrat OpenAPI 3.1 : [docs/api/openapi.yaml](docs/api/openapi.yaml)
 
 > Écart assumé avec le cahier des charges (§6 « pas d’API REST publique ») : l’API a été
-> ouverte à la demande de Doztra pour l’app mobile. Elle n’est pas publique (toute route sauf
+> ouverte à la demande de ABD pour l’app mobile. Elle n’est pas publique (toute route sauf
 > `/health` exige une session) et réutilise exactement la logique métier du web
 > (`server/services/requests.ts`).
 
@@ -81,17 +75,17 @@ jamais `.env`.
 
 | Variable | Rôle |
 |---|---|
-| `DATABASE_URL` | Base MySQL de développement (ex. `doztra_dev`) |
-| `DATABASE_URL_TEST` | Base MySQL de test (ex. `doztra_test`), **vidée par les tests** ; son nom doit contenir « test » |
+| `DATABASE_URL` | Base MySQL de développement (ex. `abd_dev`) |
+| `DATABASE_URL_TEST` | Base MySQL de test (ex. `abd_test`), **vidée par les tests** ; son nom doit contenir « test » |
 
 Avec un compte administrateur MySQL, créer les bases et un utilisateur dédié à l’application :
 
 ```sql
-CREATE DATABASE doztra_dev CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE DATABASE doztra_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'doztra'@'localhost' IDENTIFIED BY 'MOT_DE_PASSE_FORT';
-GRANT ALL PRIVILEGES ON doztra_dev.* TO 'doztra'@'localhost';
-GRANT ALL PRIVILEGES ON doztra_test.* TO 'doztra'@'localhost';
+CREATE DATABASE abd_dev CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE abd_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'abd'@'localhost' IDENTIFIED BY 'MOT_DE_PASSE_FORT';
+GRANT ALL PRIVILEGES ON abd_dev.* TO 'abd'@'localhost';
+GRANT ALL PRIVILEGES ON abd_test.* TO 'abd'@'localhost';
 ```
 
 Remplacez le mot de passe d’exemple et utilisez les mêmes identifiants dans `.env`.
@@ -107,7 +101,7 @@ Compléter `.env` avec `BETTER_AUTH_SECRET` (clé aléatoire, voir `.env.example
 `BETTER_AUTH_URL`, puis créer le premier administrateur (mot de passe demandé sans écho) :
 
 ```bash
-npm run admin:create -- --email prenom.nom@doztra.com --name "Prénom Nom"
+npm run admin:create -- --email prenom.nom@example.com --name "Prénom Nom"
 ```
 
 ## Lancement

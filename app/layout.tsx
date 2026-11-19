@@ -15,8 +15,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Doztra — Demandes clients",
-  description: "Registre partagé des demandes clients de Doztra",
+  title: "ABD — Demandes clients",
+  description: "Registre partagé des demandes clients de ABD",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

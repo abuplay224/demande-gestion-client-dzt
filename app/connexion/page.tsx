@@ -5,7 +5,7 @@ import { SignInForm } from "@/components/auth/sign-in-form";
 import { AppHeader, PageTitle } from "@/components/demandes/app-header";
 import { getCurrentUser } from "@/lib/session";
 
-export const metadata: Metadata = { title: "Connexion — Doztra" };
+export const metadata: Metadata = { title: "Connexion — ABD" };
 
 async function SignIn({ searchParams }: { searchParams: Promise<{ next?: string | string[] }> }) {
   if (await getCurrentUser()) redirect("/demandes"); // déjà connecté
@@ -20,7 +20,7 @@ export default function ConnexionPage({ searchParams }: PageProps<"/connexion">)
         <div className="flex flex-col gap-3">
           <PageTitle>Connexion</PageTitle>
           <p className="m-0 text-sm text-doztra-night-muted">
-            Accès réservé aux collaborateurs Doztra. Les comptes sont créés par un administrateur.
+            Accès réservé aux collaborateurs ABD. Les comptes sont créés par un administrateur.
           </p>
         </div>
       </AppHeader>

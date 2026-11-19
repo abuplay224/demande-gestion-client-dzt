@@ -8,7 +8,7 @@ import { plural } from "@/lib/format";
 import { requirePageUser } from "@/lib/session";
 import { listUsers } from "@/server/queries/list-users";
 
-export const metadata: Metadata = { title: "Utilisateurs — Doztra" };
+export const metadata: Metadata = { title: "Utilisateurs — ABD" };
 
 const CARD = "flex min-w-0 flex-col gap-[18px] rounded-[clamp(18px,2.4vw,24px)] bg-white p-[clamp(14px,2.2vw,24px)]";
 

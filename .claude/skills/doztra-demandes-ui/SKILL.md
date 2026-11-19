@@ -1,11 +1,11 @@
 ---
 name: doztra-demandes-ui
-description: Utiliser pour implémenter ou relire l'interface de Doztra Demandes en Next.js + Tailwind CSS + shadcn/ui — jetons de design exacts du prototype, Mulish, inventaire des 3 écrans et de leurs états, composants, responsive tableau/cartes, suppression confirmée, accessibilité clavier.
+description: Utiliser pour implémenter ou relire l'interface de ABD Demandes en Next.js + Tailwind CSS + shadcn/ui — jetons de design exacts du prototype, Mulish, inventaire des 3 écrans et de leurs états, composants, responsive tableau/cartes, suppression confirmée, accessibilité clavier.
 ---
 
-# Doztra Demandes — Interface
+# ABD Demandes — Interface
 
-Jetons et comportements extraits du prototype validé (`Doztra Demandes.dc.html`).
+Jetons et comportements extraits du prototype web validé.
 Les règles de comportement viennent de `doztra-demandes-business-rules`.
 
 ---
@@ -101,8 +101,8 @@ jetons ci-dessus, pas consommés depuis une dépendance externe.
 
 ### 3.1 Liste — `/demandes`
 
-En-tête sombre : logo carré `D` sur `#7B5CF5`, nom « Doztra », onglet « Demandes »
-(≥ 960 px), mention « Équipe Doztra » et avatar de l'utilisateur.
+En-tête sombre : logo carré `D` sur `#7B5CF5`, nom « ABD », onglet « Demandes »
+(≥ 960 px), mention « Équipe ABD » et avatar de l'utilisateur.
 
 Bloc titre : « Demandes clients » + compteur `{n} demandes · {p} prioritaires`
 (« Aucune demande enregistrée » si vide) + bouton primaire « + Ajouter une demande ».

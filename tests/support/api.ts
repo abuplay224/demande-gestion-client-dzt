@@ -38,6 +38,6 @@ export async function resetApiState() {
   await resetAuthDb();
 }
 
-export async function createUser(email = "agent@doztra.test", role: Role = "agent") {
+export async function createUser(email = "agent@abd.test", role: Role = "agent") {
   return createCredentialUser(createAuth(prisma), { name: "Agent Mobile", email, password: PASSWORD, role });
 }

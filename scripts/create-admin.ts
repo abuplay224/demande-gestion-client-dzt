@@ -46,7 +46,7 @@ async function main() {
 
   if (!values.email || !values.name) {
     throw new Error(
-      'Usage : npm run admin:create -- --email adresse@doztra.com --name "Prenom Nom"'
+      'Usage : npm run admin:create -- --email adresse@example.com --name "Prenom Nom"'
     );
   }
 

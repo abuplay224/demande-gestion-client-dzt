@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
-  title: Doztra Demandes — API mobile
+  title: ABD Demandes — API mobile
   version: 1.0.0
-  summary: API de l’application mobile de gestion des demandes clients Doztra.
+  summary: API de l’application mobile de gestion des demandes clients ABD.
   description: |
-    API réservée aux collaborateurs Doztra (aucune inscription : les comptes sont créés par
+    API réservée aux collaborateurs ABD (aucune inscription : les comptes sont créés par
     un administrateur sur le site web). Guide d’intégration : `docs/api-mobile.md`.
 
     - JSON UTF-8 ; dates en ISO 8601 UTC (à afficher dans le fuseau Africa/Conakry).
@@ -68,7 +68,7 @@ paths:
         content:
           application/json:
             schema: { $ref: "#/components/schemas/LoginBody" }
-            example: { email: binta.camara@doztra.com, password: "mot-de-passe-solide", deviceName: "iPhone de Binta" }
+            example: { email: binta.camara@example.com, password: "mot-de-passe-solide", deviceName: "iPhone de Binta" }
       responses:
         "200":
           description: Connecté

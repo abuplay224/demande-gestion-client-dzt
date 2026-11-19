@@ -27,7 +27,7 @@ model CustomerRequest {
 // ─── Authentification (Better Auth + plugin admin) ──────────────────────────
 // Comptes créés par un administrateur uniquement : aucune inscription publique.
 
-/// Collaborateur Doztra. role : « admin » ou « agent » (CHECK en base).
+/// Collaborateur ABD. role : « admin » ou « agent » (CHECK en base).
 model User {
   id            String    @id
   name          String

@@ -88,7 +88,7 @@ describe("rôles — un agent n’administre pas les comptes", () => {
   });
 
   it.each([
-    ["createUser", () => createUser({ name: "Nouveau", email: "n@doztra.gn", role: "admin", password: "motdepasse-123" })],
+    ["createUser", () => createUser({ name: "Nouveau", email: "n@abd.test", role: "admin", password: "motdepasse-123" })],
     ["setUserRole", () => setUserRole({ userId: AGENT.id, role: "admin" })],
     ["setUserActive", () => setUserActive({ userId: "autre", active: false })],
   ])("%s est refusé à un agent", async (_, call) => {

@@ -1,9 +1,9 @@
 ---
 name: doztra-demandes-nextjs
-description: Utiliser pour écrire ou relire le code serveur de Doztra Demandes en Next.js App Router + Prisma + MySQL — schéma et migrations, Server Actions de création, modification, priorité et suppression, requête de liste paginée, invalidation du cache, erreurs structurées, jeu de données fictives.
+description: Utiliser pour écrire ou relire le code serveur de ABD Demandes en Next.js App Router + Prisma + MySQL — schéma et migrations, Server Actions de création, modification, priorité et suppression, requête de liste paginée, invalidation du cache, erreurs structurées, jeu de données fictives.
 ---
 
-# Doztra Demandes — Architecture Next.js, Prisma, MySQL
+# ABD Demandes — Architecture Next.js, Prisma, MySQL
 
 Les règles de comportement viennent de `doztra-demandes-business-rules` (RG1–RG28).
 Ce skill décrit **comment** les implémenter côté serveur.

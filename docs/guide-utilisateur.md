@@ -1,4 +1,4 @@
-# Guide d’utilisation — Demandes clients Doztra
+# Guide d’utilisation — Demandes clients ABD
 
 Cette application sert à noter les demandes reçues des clients, à les retrouver et à
 signaler celles à traiter en priorité. Toute l’équipe voit la même liste.
@@ -9,7 +9,7 @@ Ouvrez l’application : la page **Connexion** s’affiche. Saisissez l’e-mail
 fournis par un administrateur, puis **Se connecter**. Votre nom apparaît en haut à droite.
 
 - Il n’est pas possible de créer soi-même un compte. Pour obtenir un compte, ou si vous avez
-  oublié votre mot de passe, adressez-vous à un administrateur Doztra.
+  oublié votre mot de passe, adressez-vous à un administrateur ABD.
 - La session dure 12 heures. Sur un poste partagé, cliquez sur **Déconnexion** en partant.
 - Le message « Ce compte est désactivé » signifie qu’un administrateur a suspendu votre accès.
 

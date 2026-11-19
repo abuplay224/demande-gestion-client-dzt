@@ -28,7 +28,7 @@ const SEED: Seed[] = [
   ["Aïssatou Camara", "Résiliation de contrat", "Je souhaite résilier mon contrat à compter du 1er décembre. Merci de me confirmer les démarches.", "a.camara@outlook.com", null, false],
   ["Port Autonome de Conakry", "Extension du contrat de maintenance", "Nous voulons étendre le contrat de maintenance au terminal à conteneurs. Merci de nous proposer un avenant.", "contrats@portconakry.gn", "+224 631 00 22 44", false],
   ["Mamadou Barry", "Erreur sur le bon de commande", "Le bon n° 2041 indique 12 unités au lieu de 21. Merci de corriger avant expédition.", "m.barry@gmail.com", null, false],
-  ["Université Gamal Abdel Nasser", "Partenariat pour stages", "Le département informatique souhaite proposer des stagiaires à Doztra pour le semestre prochain.", "partenariats@uganc.edu.gn", null, false],
+  ["Université Gamal Abdel Nasser", "Partenariat pour stages", "Le département informatique souhaite proposer des stagiaires à ABD pour le semestre prochain.", "partenariats@uganc.edu.gn", null, false],
   ["Kadiatou Touré", "Mot de passe oublié", "Je n'arrive pas à réinitialiser mon mot de passe, le lien reçu par e-mail a expiré.", "kadi.toure@gmail.com", null, false],
   ["Ets Kouyaté & Fils", "Demande de catalogue", "Pouvez-vous nous envoyer le catalogue 2026 avec les tarifs revendeurs ?", "contact@kouyate-fils.com", "+224 655 67 43 21", false],
   ["Moussa Keïta", "Réclamation livraison endommagée", "Le colis reçu ce matin était ouvert et un article manque. Photos disponibles sur demande.", null, "+224 624 11 88 77", false],

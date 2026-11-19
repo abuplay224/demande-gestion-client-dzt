@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* Jetons Doztra — valeurs exactes du prototype (docs/Doztra Demandes.dc.html) */
+/* Jetons ABD — valeurs exactes du prototype de référence */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -112,7 +112,7 @@
   --animate-toast-in: toastIn 0.25s ease;
 }
 
-/* Variables shadcn/ui branchées sur la charte Doztra (thème clair uniquement) */
+/* Variables shadcn/ui branchées sur la charte ABD (thème clair uniquement) */
 :root {
   --background: #edeff3;
   --foreground: #0e1020;

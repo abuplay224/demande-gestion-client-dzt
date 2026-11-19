@@ -71,9 +71,9 @@ export function AppHeader({ section, children }: { section?: Section; children: 
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-2.5">
           <div className="grid size-[34px] place-items-center rounded-[10px] bg-doztra-primary text-[17px] font-extrabold text-white">
-            D
+            A
           </div>
-          <span className="text-[17px] font-extrabold tracking-[-0.01em]">Doztra</span>
+          <span className="text-[17px] font-extrabold tracking-[-0.01em]">ABD</span>
         </div>
         {section && (
           <>

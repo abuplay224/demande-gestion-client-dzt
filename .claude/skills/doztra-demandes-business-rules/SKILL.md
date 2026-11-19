@@ -1,9 +1,9 @@
 ---
 name: doztra-demandes-business-rules
-description: Utiliser pour implémenter, tester ou relire toute logique métier de Doztra Demandes — validation des champs, création idempotente par UUID, tri, pagination, priorité, modification, suppression définitive, codes d'erreur, états de liste. Checklist RG1 à RG28.
+description: Utiliser pour implémenter, tester ou relire toute logique métier de ABD Demandes — validation des champs, création idempotente par UUID, tri, pagination, priorité, modification, suppression définitive, codes d'erreur, états de liste. Checklist RG1 à RG28.
 ---
 
-# Doztra Demandes — Règles de gestion
+# ABD Demandes — Règles de gestion
 
 Source : cahier des charges v1.0 du 21 octobre 2026 et amendements F04 (10 novembre 2026) et F05.
 Référence unique pour le **comportement** attendu. L'apparence est traitée par

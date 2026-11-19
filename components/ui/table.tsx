@@ -1,7 +1,7 @@
 import * as React from "react"
 import { cn } from "cn"
 
-// Tableau adapté au prototype Doztra : en-tête #F5F6F8 aux coins arrondis, lignes séparées par #EEF0F3.
+// Tableau adapté au prototype ABD : en-tête #F5F6F8 aux coins arrondis, lignes séparées par #EEF0F3.
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (

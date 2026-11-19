@@ -1,9 +1,9 @@
 ---
 name: doztra-demandes-securite-recette
-description: Utiliser pour mettre en place ou relire le contrôle d'accès, le durcissement et les tests de Doztra Demandes — protection des routes et Server Actions, journalisation sans données personnelles, exploitation, et les scénarios de recette R01 à R21 avec leur stratégie de test.
+description: Utiliser pour mettre en place ou relire le contrôle d'accès, le durcissement et les tests de ABD Demandes — protection des routes et Server Actions, journalisation sans données personnelles, exploitation, et les scénarios de recette R01 à R21 avec leur stratégie de test.
 ---
 
-# Doztra Demandes — Sécurité, exploitation et recette
+# ABD Demandes — Sécurité, exploitation et recette
 
 Source : cahier des charges, sections 8 et 9 et amendements F04 (10 novembre 2026) et F05. À lire avant toute mise en place du
 contrôle d'accès et avant de déclarer une fonctionnalité terminée.
@@ -12,7 +12,7 @@ contrôle d'accès et avant de déclarer une fonctionnalité terminée.
 
 ## 1. Contrôle d'accès
 
-Le mécanisme (fournisseur d'identité ou passerelle) **reste à confirmer avec Doztra**.
+Le mécanisme (fournisseur d'identité ou passerelle) **reste à confirmer avec ABD**.
 Ne pas le choisir seul. En attendant, le code est écrit derrière une frontière unique :
 
 ```ts
@@ -38,7 +38,7 @@ Règles :
   pages ne la protège pas (R15).
 - Le middleware protège en plus **toutes** les routes, y compris `/` et les ressources
   statiques sensibles. Défense en profondeur, pas substitut.
-- Aucune inscription publique. Les comptes sont provisionnés par Doztra.
+- Aucune inscription publique. Les comptes sont provisionnés par ABD.
 - Les droits sont communs aux utilisateurs autorisés, sauf la suppression définitive des
   demandes, réservée aux administrateurs. Les contrôles de rôle sont effectués dans chaque
   Server Action et Route Handler ; masquer un bouton ne suffit pas.
@@ -73,7 +73,7 @@ En-têtes de réponse recommandés (`next.config`) : `Content-Security-Policy` r
 - Migrations versionnées et committées ; `prisma migrate deploy` en déploiement.
 - Sauvegarde quotidienne proposée, **procédure de restauration documentée et testée** —
   une sauvegarde jamais restaurée n'est pas une sauvegarde.
-- Durée de conservation des données : à définir avec Doztra avant exploitation réelle.
+- Durée de conservation des données : à définir avec ABD avant exploitation réelle.
 - Cible de performance à vérifier en recette : sur 1 000 demandes fictives et
   5 utilisateurs simultanés, 95 % des chargements de liste et des mutations sous 2 s,
   hors démarrage à froid, sur connexion stable. C'est un objectif à **mesurer** dans

@@ -1,8 +1,8 @@
 import type { SessionUser } from "@/lib/session";
 
 // Session simulée pour les tests d’intégration (voir le mock de @/lib/session dans integration-setup.ts).
-export const AGENT: SessionUser = { id: "agent-1", name: "Agent Test", email: "agent@doztra.test", role: "agent" };
-export const ADMIN: SessionUser = { id: "admin-1", name: "Admin Test", email: "admin@doztra.test", role: "admin" };
+export const AGENT: SessionUser = { id: "agent-1", name: "Agent Test", email: "agent@abd.test", role: "agent" };
+export const ADMIN: SessionUser = { id: "admin-1", name: "Admin Test", email: "admin@abd.test", role: "admin" };
 
 const g = globalThis as unknown as { __testUser?: SessionUser | null };
 

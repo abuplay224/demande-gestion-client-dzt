@@ -54,7 +54,7 @@ export function SignInForm({ next }: { next: string }) {
         {pending ? "Connexion…" : "Se connecter"}
       </Button>
       <p className="m-0 text-center text-[13px] text-doztra-muted">
-        Pas de compte ou mot de passe oublié ? Adressez-vous à un administrateur Doztra.
+        Pas de compte ou mot de passe oublié ? Adressez-vous à un administrateur ABD.
       </p>
     </form>
   );

@@ -1,9 +1,9 @@
-# Cahier des charges — Doztra
+# Cahier des charges — ABD
 ## Application de gestion des demandes clients — MVP
 Version 1.0 • 21 octobre 2026 • Proposition de cadrage pour implémentation
 
 ## 1. Objectif
-Centraliser les demandes clients de Doztra dans une application web simple permettant à l’équipe de saisir une demande, consulter les demandes enregistrées et identifier celles à traiter en priorité.
+Centraliser les demandes clients de ABD dans une application web simple permettant à l’équipe de saisir une demande, consulter les demandes enregistrées et identifier celles à traiter en priorité.
 
 Le résultat attendu est un registre partagé, persistant et utilisable sur ordinateur et téléphone. Ce MVP ne couvre pas encore le suivi complet de résolution des demandes.
 
@@ -15,7 +15,7 @@ Le résultat attendu est un registre partagé, persistant et utilisable sur ordi
 - Utiliser Next.js pour le full stack, MySQL pour les données et shadcn/ui pour les composants.
 
 ### Hypothèses de conception retenues
-- Usage interne : les collaborateurs de Doztra saisissent les demandes reçues des clients.
+- Usage interne : les collaborateurs de ABD saisissent les demandes reçues des clients.
 - Une seule organisation et une liste partagée ; les agents et administrateurs ont les mêmes droits de gestion, sauf la suppression définitive, réservée aux administrateurs.
 - Interface en français ; connexion Internet requise.
 - Une demande comporte un client, un objet et une description ; ses coordonnées sont facultatives.
@@ -23,13 +23,13 @@ Le résultat attendu est un registre partagé, persistant et utilisable sur ordi
 - Une protection d’accès doit être disponible avant utilisation avec des données réelles. Son mécanisme reste à choisir.
 - Pas de tableau de bord statistique, de portail client ni de gestion des comptes dans ce périmètre métier.
 
-Ces hypothèses constituent des choix proposés, et non des besoins déjà confirmés par Doztra.
+Ces hypothèses constituent des choix proposés, et non des besoins déjà confirmés par ABD.
 
 ### Hors périmètre
 Statuts de traitement, clôture, attribution à un agent, commentaires, pièces jointes, notifications, intégrations e-mail/WhatsApp/Telegram, recherche avancée, exports et synchronisation temps réel. Les demandes ne peuvent donc pas encore être indiquées comme résolues.
 
 ## 3. Utilisateurs et parcours
-Utilisateur : collaborateur autorisé de Doztra.
+Utilisateur : collaborateur autorisé de ABD.
 
 Parcours principal :
 1. Accéder à la liste des demandes.
@@ -109,13 +109,13 @@ Depuis le panneau de détail, tout utilisateur connecté peut modifier le nom du
 ## 5. Écrans et ergonomie
 | Écran | Route proposée | Contenu |
 |---|---|---|
-| Liste | /demandes | Nom Doztra, titre, bouton d’ajout, liste, pagination |
+| Liste | /demandes | Nom ABD, titre, bouton d’ajout, liste, pagination |
 | Création | /demandes/nouvelle | Formulaire, erreurs par champ, boutons Enregistrer et Annuler |
 | Détail et modification | Panneau depuis la liste | Objet, description complète, client, coordonnées, dates, identifiant, édition et suppression |
 
 La route / redirige vers /demandes. Le panneau de détail utilise les données de la page courante ; aucune route de détail supplémentaire n’est nécessaire.
 
-Design sobre, fond clair et une couleur principale à confirmer selon la charte Doztra. Sur ordinateur : tableau. Sur mobile : cartes affichant les mêmes informations essentielles, sans défilement horizontal de la page.
+Design sobre, fond clair et une couleur principale à confirmer selon la charte ABD. Sur ordinateur : tableau. Sur mobile : cartes affichant les mêmes informations essentielles, sans défilement horizontal de la page.
 
 Composants shadcn/ui proposés : Button, Input, Textarea, Label, Table, Card, Badge, Sheet, Alert, Skeleton et Pagination. Les composants sont intégrés au projet et adaptés à la charte.
 
@@ -171,7 +171,7 @@ Une seule table métier : customer_requests. Les éventuelles tables du fourniss
 | created_at | DATETIME(3) | NOT NULL, valeur serveur UTC à la création |
 | updated_at | DATETIME(3) | NOT NULL, valeur serveur UTC à chaque modification réelle |
 
-Ajouter des contraintes CHECK pour les longueurs obligatoires (MySQL 8.0.16 ou plus récent). Stocker les horodatages en UTC dans `DATETIME(3)`, afficher en français dans le fuseau Africa/Conakry proposé pour Doztra.
+Ajouter des contraintes CHECK pour les longueurs obligatoires (MySQL 8.0.16 ou plus récent). Stocker les horodatages en UTC dans `DATETIME(3)`, afficher en français dans le fuseau Africa/Conakry proposé pour ABD.
 
 Index de liste proposé : (is_priority DESC, created_at DESC, id DESC).
 Tri correspondant : ORDER BY is_priority DESC, created_at DESC, id DESC.
@@ -242,17 +242,17 @@ Tests attendus : validation et règles métier, intégration sur MySQL de test, 
 7. Mettre en place la protection d’accès et finaliser les contrôles serveur.
 8. Exécuter la recette, corriger, documenter et préparer le déploiement.
 
-Le chiffrage et le calendrier restent à établir après choix du mécanisme d’accès et de l’hébergement. La fonctionnalité est livrée quand les tests de recette sont satisfaits et que Doztra peut réaliser les trois opérations sur l’environnement prévu.
+Le chiffrage et le calendrier restent à établir après choix du mécanisme d’accès et de l’hébergement. La fonctionnalité est livrée quand les tests de recette sont satisfaits et que ABD peut réaliser les trois opérations sur l’environnement prévu.
 
 ## 12. Décisions restant à confirmer
 | Décision | Proposition de départ |
 |---|---|
-| Qui utilise l’application ? | Équipe interne Doztra uniquement |
+| Qui utilise l’application ? | Équipe interne ABD uniquement |
 | Coordonnées obligatoires ? | Non ; nom, objet et description obligatoires |
 | Retirer une priorité ? | Oui |
 | Accès | Identité d’entreprise existante ou accès privé géré |
 | Hébergement et budget | À définir avant déploiement |
-| Identité visuelle | Nom Doztra, thème clair ; logo/couleur à fournir |
+| Identité visuelle | Nom ABD, thème clair ; logo/couleur à fournir |
 | Conservation des données | Durée à définir avant exploitation réelle |
 | Modification du contenu | Disponible sur le web ; l’API mobile sera décidée séparément |
 
@@ -278,4 +278,4 @@ La suppression définitive est réservée aux administrateurs, sur le web comme 
 Les agents ne voient pas la commande dans l’interface ; tout appel direct de suppression est
 refusé côté serveur.
 
-Les choix de champs, limites, tri, pagination, modèle de données et critères de recette sont des propositions propres au projet Doztra ; ils ne sont pas imposés par ces documentations.
+Les choix de champs, limites, tri, pagination, modèle de données et critères de recette sont des propositions propres au projet ABD ; ils ne sont pas imposés par ces documentations.

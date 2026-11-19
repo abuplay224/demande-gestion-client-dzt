@@ -17,7 +17,7 @@ const rules: Record<UserField, (v: string) => string | undefined> = {
     const t = v.trim();
     if (!t) return "Indiquez l’adresse e-mail.";
     if (t.length > 254) return "254 caractères maximum.";
-    if (!EMAIL.test(t)) return "Adresse e-mail invalide. Exemple : nom@doztra.com";
+    if (!EMAIL.test(t)) return "Adresse e-mail invalide. Exemple : nom@example.com";
   },
   role: (v) => {
     if (!(ROLES as readonly string[]).includes(v)) return "Choisissez un rôle.";

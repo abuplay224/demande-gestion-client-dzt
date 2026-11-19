@@ -1,6 +1,6 @@
 # Guide développeur
 
-Ce guide décrit comment installer, tester et faire évoluer **Demandes clients Doztra**.
+Ce guide décrit comment installer, tester et faire évoluer **Demandes clients ABD**.
 Pour l’installation rapide, les scripts et le déploiement, voir aussi le
 [README](../README.md). Pour le fonctionnement côté utilisateur, voir le
 [guide d’utilisation](./guide-utilisateur.md).
@@ -16,7 +16,7 @@ Depuis la racine du projet, copiez `.env.example` vers `.env` (PowerShell :
 
 | Variable | Obligatoire | Usage |
 |---|---:|---|
-| `DATABASE_URL` | Oui | URL MySQL de développement (`mysql://utilisateur:mot-de-passe@hôte:3306/doztra_dev`) |
+| `DATABASE_URL` | Oui | URL MySQL de développement (`mysql://utilisateur:mot-de-passe@hôte:3306/abd_dev`) |
 | `DATABASE_URL_TEST` | Oui pour les tests d’intégration/e2e | URL MySQL distincte, réinitialisée par les tests |
 | `BETTER_AUTH_SECRET` | Oui | Clé aléatoire d’au moins 32 caractères pour les sessions |
 | `BETTER_AUTH_URL` | Oui | Origine de l’application, par exemple `http://localhost:3000` |
@@ -39,7 +39,7 @@ npm run db:test:deploy
 Créer le premier compte administrateur :
 
 ```powershell
-npm run admin:create -- --email prenom.nom@doztra.com --name "Prénom Nom"
+npm run admin:create -- --email prenom.nom@example.com --name "Prénom Nom"
 ```
 
 Lancer le serveur de développement avec `npm run dev`, puis ouvrir

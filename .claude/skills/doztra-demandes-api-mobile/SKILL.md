@@ -1,9 +1,9 @@
 ---
 name: doztra-demandes-api-mobile
-description: Utiliser pour exposer et sécuriser l'API HTTP que l'app mobile Doztra Demandes consomme — Route Handlers Next.js, authentification par jeton, contrats JSON des trois opérations, idempotence, codes d'erreur, limitation de débit, versionnage.
+description: Utiliser pour exposer et sécuriser l'API HTTP que l'app mobile ABD Demandes consomme — Route Handlers Next.js, authentification par jeton, contrats JSON des trois opérations, idempotence, codes d'erreur, limitation de débit, versionnage.
 ---
 
-# Doztra Demandes — API pour l'app mobile
+# ABD Demandes — API pour l'app mobile
 
 Ce skill couvre le **côté serveur** de la version mobile. Les règles de gestion restent
 celles de `doztra-demandes-business-rules` (RG1–RG20) : l'API ne les réécrit pas, elle
@@ -19,7 +19,7 @@ ce MVP ». Une application React Native ne peut pas appeler des Server Actions :
 besoin d'endpoints HTTP.
 
 **Conséquence : ajouter une API est un élargissement du périmètre, pas un détail
-d'implémentation.** Avant d'écrire du code, faire acter par Doztra :
+d'implémentation.** Avant d'écrire du code, faire acter par ABD :
 
 1. l'ouverture d'une API HTTP authentifiée (non publique : réservée aux collaborateurs) ;
 2. le mécanisme d'authentification mobile, qui découle du mécanisme d'accès web encore
@@ -52,9 +52,9 @@ contexte utilisateur) ; Server Actions et Route Handlers n'en sont que deux adap
 
 ## 2. Authentification
 
-Le mécanisme reste à confirmer avec Doztra. Quelle que soit l'option retenue :
+Le mécanisme reste à confirmer avec ABD. Quelle que soit l'option retenue :
 
-- **Aucune inscription publique.** Les comptes sont provisionnés par Doztra.
+- **Aucune inscription publique.** Les comptes sont provisionnés par ABD.
 - Jeton d'accès **court** (15–30 min) + jeton de rafraîchissement **à usage unique**
   (rotation : un rafraîchissement invalide le précédent).
 - Le jeton d'accès voyage en `Authorization: Bearer <jeton>`, jamais en paramètre d'URL
@@ -212,7 +212,7 @@ anciennes resteront en circulation.
 
 ## 7. Avant de valider une modification
 
-- [ ] L'élargissement de périmètre (API) est acté par Doztra
+- [ ] L'élargissement de périmètre (API) est acté par ABD
 - [ ] Aucune règle métier dupliquée entre Server Action et Route Handler
 - [ ] `requireApiUser()` en première ligne de chaque handler protégé
 - [ ] 401 et 403 distingués

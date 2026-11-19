@@ -2,7 +2,7 @@ import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
 
-// Adapté à la charte Doztra : focus visible global (globals.css), pas d’anneau shadcn.
+// Adapté à la charte ABD : focus visible global (globals.css), pas d’anneau shadcn.
 const buttonVariants = cva(
   "group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding font-bold whitespace-nowrap transition-colors select-none hover:no-underline disabled:cursor-default [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {

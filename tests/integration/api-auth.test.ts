@@ -12,7 +12,7 @@ beforeEach(async () => {
   await resetApiState();
 });
 
-async function signIn(email = "agent@doztra.test") {
+async function signIn(email = "agent@abd.test") {
   const res = await call(login, "POST", { body: { email, password: PASSWORD, deviceName: "Test" } });
   expect(res.status).toBe(200);
   return res.json.data as { accessToken: string; refreshToken: string };
@@ -29,13 +29,13 @@ describe("GET /health", () => {
 describe("POST /auth/login", () => {
   it("renvoie une paire de jetons et l’utilisateur ; seuls les hachages sont stockés", async () => {
     await createUser();
-    const res = await call(login, "POST", { body: { email: " Agent@Doztra.test ", password: PASSWORD } });
+    const res = await call(login, "POST", { body: { email: " Agent@abd.test ", password: PASSWORD } });
 
     expect(res.status).toBe(200);
     const d = res.json.data;
     expect(d).toMatchObject({
       tokenType: "Bearer",
-      user: { email: "agent@doztra.test", name: "Agent Mobile", role: "agent" },
+      user: { email: "agent@abd.test", name: "Agent Mobile", role: "agent" },
     });
     expect(d.accessToken).toMatch(/^dza_/);
     expect(d.refreshToken).toMatch(/^dzr_/);
@@ -49,8 +49,8 @@ describe("POST /auth/login", () => {
 
   it("même message pour un mauvais mot de passe et un e-mail inconnu (401)", async () => {
     await createUser();
-    const wrong = await call(login, "POST", { body: { email: "agent@doztra.test", password: "mauvais-mdp-123" } });
-    const unknown = await call(login, "POST", { body: { email: "inconnu@doztra.test", password: PASSWORD } });
+    const wrong = await call(login, "POST", { body: { email: "agent@abd.test", password: "mauvais-mdp-123" } });
+    const unknown = await call(login, "POST", { body: { email: "inconnu@abd.test", password: PASSWORD } });
     for (const res of [wrong, unknown]) {
       expect(res.status).toBe(401);
       expect(res.json.error).toEqual({ code: "UNAUTHORIZED", message: "E-mail ou mot de passe incorrect." });
@@ -60,7 +60,7 @@ describe("POST /auth/login", () => {
   it("compte désactivé : 403, aucune session ouverte", async () => {
     const user = await createUser();
     await prisma.user.update({ where: { id: user.id }, data: { banned: true } });
-    const res = await call(login, "POST", { body: { email: "agent@doztra.test", password: PASSWORD } });
+    const res = await call(login, "POST", { body: { email: "agent@abd.test", password: PASSWORD } });
     expect(res.status).toBe(403);
     expect(res.json.error.message).toMatch(/désactivé/);
     expect(await prisma.apiSession.count()).toBe(0);
@@ -82,9 +82,9 @@ describe("POST /auth/login", () => {
   it("limite les tentatives : 429 + Retry-After après 5 essais sur un compte", async () => {
     await createUser();
     for (let i = 0; i < 5; i++) {
-      await call(login, "POST", { body: { email: "agent@doztra.test", password: "mauvais-mdp-123" } });
+      await call(login, "POST", { body: { email: "agent@abd.test", password: "mauvais-mdp-123" } });
     }
-    const res = await call(login, "POST", { body: { email: "agent@doztra.test", password: PASSWORD } });
+    const res = await call(login, "POST", { body: { email: "agent@abd.test", password: PASSWORD } });
     expect(res.status).toBe(429);
     expect(res.json.error.code).toBe("RATE_LIMITED");
     expect(Number(res.headers.get("retry-after"))).toBeGreaterThan(0);
@@ -97,7 +97,7 @@ describe("jeton d’accès — R15 version mobile", () => {
     const { accessToken } = await signIn();
     const res = await call(me, "GET", { token: accessToken });
     expect(res.status).toBe(200);
-    expect(res.json.data).toMatchObject({ email: "agent@doztra.test", role: "agent" });
+    expect(res.json.data).toMatchObject({ email: "agent@abd.test", role: "agent" });
     expect(res.json.data).not.toHaveProperty("sessionId");
   });
 

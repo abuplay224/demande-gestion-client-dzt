@@ -1,4 +1,4 @@
-# CLAUDE.md — Doztra · Gestion des demandes clients (MVP)
+# CLAUDE.md — ABD · Gestion des demandes clients (MVP)
 
 Ce fichier est lu automatiquement au démarrage de chaque session. Il décrit le projet,
 les commandes, les conventions et les garde-fous. Les détails métier, d'architecture,
@@ -8,7 +8,7 @@ d'interface et de sécurité sont dans les skills du dossier `.claude/skills/`.
 
 ## 1. Contexte
 
-Application web interne permettant à l'équipe Doztra de **saisir**, **consulter**,
+Application web interne permettant à l'équipe ABD de **saisir**, **consulter**,
 **modifier** et **prioriser** les demandes reçues des clients. Registre partagé, persistant, utilisable
 sur ordinateur et téléphone. Interface **en français**, fuseau **Africa/Conakry**.
 
@@ -104,7 +104,7 @@ rafraîchissement à usage unique avec détection de réutilisation), limiteur d
 tenir à jour à chaque changement (évolutions additives uniquement dans v1). Skill :
 `doztra-demandes-api-mobile`.
 
-Le prototype de référence est `docs/Doztra Demandes.dc.html`.
+Le prototype de référence est le fichier HTML partagé dans `docs/`.
 
 ---
 
@@ -209,15 +209,15 @@ tests/
 
 ## 8. Décisions
 
-Tranchées par Doztra (22 oct. 2026) : connexion e-mail + mot de passe (Better Auth), comptes
+Tranchées par ABD (22 oct. 2026) : connexion e-mail + mot de passe (Better Auth), comptes
 créés par un administrateur (pas d'inscription publique), rôles Admin / Agent (écart
 assumé avec le §2 du cahier des charges).
 
-Tranchées par Doztra (27 oct. 2026) : API HTTP v1 authentifiée pour l'app React Native
+Tranchées par ABD (27 oct. 2026) : API HTTP v1 authentifiée pour l'app React Native
 (écart assumé avec le §6 « pas d'API REST publique »), jeton Bearer, périmètre auth +
 demandes (administration des comptes sur le web uniquement).
 
-Tranchée à la demande de Doztra (10 nov. 2026) : suppression définitive des demandes,
+Tranchée à la demande de ABD (10 nov. 2026) : suppression définitive des demandes,
 avec confirmation dans l’interface avant l’effacement. Amendement du 12 nov. 2026 :
 seuls les administrateurs peuvent supprimer ; les agents ne disposent pas de cette action.
 La règle s’applique au web et à l’API mobile v1.
@@ -231,7 +231,7 @@ n’expose pas cette opération.
 Ne pas trancher seul ; demander avant d'implémenter :
 
 - Hébergement et budget
-- Logo et couleur officielle de la charte Doztra (le prototype propose `#7B5CF5`)
+- Logo et couleur officielle de la charte ABD (le prototype propose `#7B5CF5`)
 - Durée de conservation des données
 - Exposition de la modification dans l’API mobile (l’édition est disponible sur le web)
 
